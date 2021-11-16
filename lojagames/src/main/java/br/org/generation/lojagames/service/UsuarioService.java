@@ -1,4 +1,4 @@
-package br.org.generation.blogpessoal.service;
+package br.org.generation.lojagames.service;
 
 import java.nio.charset.Charset;
 import java.util.Optional;
@@ -10,9 +10,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.org.generation.blogpessoal.model.Usuario;
-import br.org.generation.blogpessoal.model.UsuarioLogin;
-import br.org.generation.blogpessoal.repository.UsuarioRepository;
+import br.org.generation.lojagames.model.Usuario;
+import br.org.generation.lojagames.model.UsuarioLogin;
+import br.org.generation.lojagames.repository.UsuarioRepository;
 
 @Service
 public class UsuarioService {
@@ -23,7 +23,8 @@ public class UsuarioService {
 	public Optional<Usuario> cadastrarUsuario(Usuario usuario) {
 
 		if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
-			return Optional.empty();
+			throw new ResponseStatusException(
+						HttpStatus.BAD_REQUEST, "O Usuário já existe!", null);
 		
 		usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
@@ -34,7 +35,7 @@ public class UsuarioService {
 	public Optional<Usuario> atualizarUsuario(Usuario usuario) {
 
 		if (usuarioRepository.findById(usuario.getId()).isPresent()) {
-		
+			
 			Optional<Usuario> buscaUsuario = usuarioRepository.findByUsuario(usuario.getUsuario());
 			
 			if( buscaUsuario.isPresent() ){
@@ -49,8 +50,8 @@ public class UsuarioService {
 			return Optional.of(usuarioRepository.save(usuario));
 		} 
 			
-		return Optional.empty();
-
+		throw new ResponseStatusException(
+					HttpStatus.NOT_FOUND, "Usuário não encontrado!", null);
 	}	
 
 	public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
@@ -72,7 +73,8 @@ public class UsuarioService {
 			}
 		}	
 		
-		return Optional.empty();
+		throw new ResponseStatusException(
+				HttpStatus.UNAUTHORIZED, "Usuário ou senha inválidos!", null);
 		
 	}
 
