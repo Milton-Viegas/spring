@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import br.org.generation.blogpessoal.model.Usuario;
 
-
 public class UserDetailsImpl implements UserDetails {
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +20,8 @@ public class UserDetailsImpl implements UserDetails {
 		this.password = usuario.getSenha();
 	}
 
-	public UserDetailsImpl() {	}
+	public UserDetailsImpl() {
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -48,7 +48,7 @@ public class UserDetailsImpl implements UserDetails {
 	public boolean isAccountNonLocked() {
 		return true;
 	}
-	
+
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
