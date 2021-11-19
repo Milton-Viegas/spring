@@ -1,0 +1,1 @@
+https://delavegablog.herokuapp.com/swagger-ui/#/
